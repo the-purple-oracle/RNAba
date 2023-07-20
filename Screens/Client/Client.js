@@ -5,11 +5,13 @@ import {
   StyleSheet,
   FlatList,
   Modal,
+  Button,
   TouchableOpacity,
 } from 'react-native';
 import TallyBox from '../../Components/TallyBox/TallyBox';
 import StyledButton from '../../Components/StyledButton';
-import {deleteClient} from '../../api/clients';
+import GoBackBtn from '../../Components/GoBackBtn/GoBackBtn';
+import {deleteClient, editSession} from '../../api/clients';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -24,7 +26,7 @@ const Client = props => {
   let behaviors = client.behaviors;
   const [tallies, setTallies] = useState();
   const [modalVisible, setModalVisible] = useState(false);
-
+  const [sessions, setSessions] = useState(client.sessions);
   useEffect(() => {
     setUpTallies();
     return () => {
@@ -39,10 +41,20 @@ const Client = props => {
     }
     setTallies(t);
   };
+  const getAllTallies = () => {
+    let newSession = tallies;
+    setSessions(prevArray => [...prevArray, newSession]);
+    const data = [...sessions, newSession];
+
+    editSession(data, client._id, user.token, navigation);
+    // editSession(newSession, client._id, user.token, navigation);
+    // console.log(newSession);
+  };
 
   const getTally = (name, count) => {
     let newTallies = tallies;
     newTallies[name] = count;
+    // console.log(newTallies);
     setTallies(newTallies);
   };
 
@@ -101,22 +113,29 @@ const Client = props => {
       </Modal>
 
       <View style={styles.clientHeader}>
-        <Text style={{fontSize: 20}}>{client.name}</Text>
+        <Text style={styles.headerText}>{client.name}</Text>
       </View>
+
       <View style={styles.gear}>
         <TouchableOpacity onPress={() => toggleModal()}>
           <FontAwesomeIcon icon={faGear} size={40} color="grey" />
         </TouchableOpacity>
       </View>
-      <StyledButton
-        secondary
-        large
-        onPress={() => {
-          navigation.navigate('TreatmentPlan');
-        }}>
-        <Text style={styles.btnText}>Treatment Plan</Text>
-      </StyledButton>
 
+      <View style={styles.backBtn}>
+        <GoBackBtn />
+      </View>
+      <View style={styles.treatmentPlanBtnContainer}>
+        <StyledButton
+          secondary
+          large
+          onPress={() => {
+            navigation.navigate('TreatmentPlan', client);
+          }}>
+          <Text style={styles.btnText}>Treatment Plan</Text>
+        </StyledButton>
+      </View>
+      <Button title={'get tallies'} onPress={() => getAllTallies()} />
       <View style={styles.behaviorContainer}>
         <FlatList
           data={client.behaviors}

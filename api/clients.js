@@ -109,3 +109,37 @@ export const editClient = (editedClient, clientId, token, navigation) => {
       });
     });
 };
+
+export const editSession = (sessions, clientId, token, navigation) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const data = {sessions: sessions};
+
+  axios
+    .put(`${baseURL}clients/sessions/${clientId}`, data, config)
+    .then(res => {
+      if (res.status === 200 || res.status === 201) {
+        Toast.show({
+          topOffset: 60,
+          type: 'success',
+          text1: 'New client successfully updated',
+          text2: '',
+        });
+
+        setTimeout(() => {
+          navigation.navigate('Clients');
+        }, 500);
+      }
+    })
+    .catch(error => {
+      Toast.show({
+        topOffset: 60,
+        type: 'error',
+        text1: 'Something went wrong',
+        text2: 'Please try again',
+      });
+    });
+};

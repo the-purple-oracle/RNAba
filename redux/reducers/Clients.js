@@ -9,7 +9,6 @@ const Clients = createSlice({
   initialState: initialState,
   reducers: {
     resetClients: () => {
-      console.log('resetting clients');
       return initialState;
     },
     setClients: (state, action) => {

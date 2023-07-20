@@ -1,17 +1,31 @@
 import {StyleSheet} from 'react-native';
-import {scaleFontSize, verticalScale} from '../../assets/styles/scaling';
+import {
+  horizontalScale,
+  scaleFontSize,
+  verticalScale,
+} from '../../assets/styles/scaling';
 
 const styles = StyleSheet.create({
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: verticalScale(24),
+    marginBottom: verticalScale(12),
+  },
+
+  goBackBtn: {
+    position: 'absolute',
+    left: horizontalScale(24),
+    flexDirection: 'row',
+  },
   listContainer: {
     height: '100%',
     backgroundColor: 'gainsboro',
     position: 'relative',
   },
   title: {
-    marginTop: verticalScale(50),
-    alignSelf: 'center',
-    justifyContent: 'center',
-    fontSize: scaleFontSize(30),
+    fontSize: scaleFontSize(34),
   },
   btnText: {
     color: 'white',
@@ -19,6 +33,7 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     alignItems: 'center',
+    marginTop: verticalScale(24),
   },
   loading: {
     flex: 1,

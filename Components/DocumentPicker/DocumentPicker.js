@@ -1,101 +1,43 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 
 import {StyleSheet, View, Text, Button} from 'react-native';
-import DocumentPicker, {
-  DirectoryPickerResponse,
-  DocumentPickerResponse,
-  isCancel,
-  isInProgress,
-  types,
-} from 'react-native-document-picker';
-import {useEffect} from 'react';
+import StyledButton from '../StyledButton';
+import DocumentPicker, {isCancel, types} from 'react-native-document-picker';
+import RNFS from 'react-native-fs';
 import styles from './styles';
 
-const DocumentPickerComponent = () => {
-  const [result, setResult] = React.useState(
-    DirectoryPickerResponse | undefined | null,
-  );
+const DocumentPickerComponent = props => {
+  const [result, setResult] = useState();
+  const [baseStr, setBaseStr] = useState('');
 
-  useEffect(() => {
-    console.log(JSON.stringify(result, null, 2));
-  }, [result]);
+  const pickAndConvertToBase64 = async () => {
+    try {
+      const document = await DocumentPicker.pick({
+        type: [DocumentPicker.types.pdf],
+      });
 
-  const handleError = err => {
-    if (isCancel(err)) {
-      console.warn('cancelled');
-      // User cancelled the picker, exit any dialogs or menus and move on
-    } else if (isInProgress(err)) {
-      console.warn(
-        'multiple pickers were opened, only the last will be considered',
+      //   const fileContent = await RNFS.readFile(document[0].uri, 'base64');
+      //save base64 string in state
+      setBaseStr(await RNFS.readFile(document[0].uri, 'base64'));
+      //set the base64 string to pass to pdf view component
+      props.setPdfBase(await RNFS.readFile(document[0].uri, 'base64'));
+      setResult(
+        'data:application/pdf;base64,' +
+          (await RNFS.readFile(document[0].uri, 'base64')),
       );
-    } else {
-      throw err;
+    } catch (error) {
+      if (DocumentPicker.isCancel(error)) {
+        console.log('Document picker cancelled.');
+      } else {
+        console.log('Error picking document ', error);
+      }
     }
   };
-
   return (
     <View style={styles.container}>
-      <Button
-        title="open picker for single file selection"
-        onPress={async () => {
-          try {
-            const pickerResult = await DocumentPicker.pickSingle({
-              presentationStyle: 'fullScreen',
-              copyTo: 'cachesDirectory',
-            });
-            setResult([pickerResult]);
-          } catch (e) {
-            handleError(e);
-          }
-        }}
-      />
-      {/* <Button
-        title="open picker for multi file selection"
-        onPress={() => {
-          DocumentPicker.pick({allowMultiSelection: true})
-            .then(setResult)
-            .catch(handleError);
-        }}
-      />
-      <Button
-        title="open picker for multi selection of word files"
-        onPress={() => {
-          DocumentPicker.pick({
-            allowMultiSelection: true,
-            type: [types.doc, types.docx],
-          })
-            .then(setResult)
-            .catch(handleError);
-        }}
-      /> */}
-      <Button
-        title="open picker for single selection of pdf file"
-        onPress={() => {
-          DocumentPicker.pick({
-            type: types.pdf,
-          })
-            .then(setResult)
-            .catch(handleError);
-        }}
-      />
-      {/* <Button
-        title="releaseSecureAccess"
-        onPress={() => {
-          DocumentPicker.releaseSecureAccess([])
-            .then(() => {
-              console.warn('releaseSecureAccess: success');
-            })
-            .catch(handleError);
-        }}
-      />
-      <Button
-        title="open directory picker"
-        onPress={() => {
-          DocumentPicker.pickDirectory().then(setResult).catch(handleError);
-        }}
-      /> */}
-
-      <Text selectable>Result: {JSON.stringify(result, null, 2)}</Text>
+      <StyledButton secondary medium onPress={pickAndConvertToBase64}>
+        <Text style={styles.btnText}>Pick Pdf</Text>
+      </StyledButton>
     </View>
   );
 };

@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import FormContainer from '../../Components/form/FormContainer/FormContainer';
 import Input from '../../Components/form/Input/Input';
+import GoBackBtn from '../../Components/GoBackBtn/GoBackBtn';
+import DocumentPickerComponent from '../../Components/DocumentPicker/DocumentPicker';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {editClient} from '../../api/clients';
@@ -22,6 +24,7 @@ const EditClient = props => {
   const [name, setName] = useState('');
   const [behaviors, setBehaviors] = useState(['']);
   const [notes, setNotes] = useState('');
+  const [pdfBase, setPdfBase] = useState();
 
   useEffect(() => {
     setName(client.name);
@@ -51,6 +54,7 @@ const EditClient = props => {
         behaviors: behaviors,
         notes: notes,
         user: user.user.userId,
+        pdf: pdfBase,
       };
 
       editClient(editedClient, client._id, user.token, navigation);
@@ -82,54 +86,68 @@ const EditClient = props => {
     }
   };
   return (
-    <FormContainer>
-      <Text style={styles.labelText}>Client Name</Text>
-      <Input
-        placeholder="Client Name"
-        name="name"
-        id="name"
-        value={name}
-        onChangeText={text => setName(text)}
-      />
-      <View style={styles.behaviorsTitle}>
-        <Text style={styles.labelText}>Behaviors</Text>
-        <Button title="add" onPress={() => handleAdd()} />
+    <View>
+      <View style={styles.goBackBtn}>
+        <GoBackBtn />
       </View>
-      {behaviors ? (
-        behaviors.map((data, i) => {
-          return (
-            <View style={styles.behaviorInput} key={i}>
-              <TextInput
-                key={i}
-                value={behaviors[i]}
-                placeholder="add behavior"
-                onChangeText={e => handleChange(e, i)}
-                style={styles.input}
-              />
-              <Button title="x" onPress={() => handleDelete(i)} />
+      <View style={styles.container}>
+        <FormContainer>
+          <Text style={styles.labelText}>Client Name</Text>
+          <Input
+            placeholder="Client Name"
+            name="name"
+            id="name"
+            value={name}
+            onChangeText={text => setName(text)}
+          />
+          <View style={styles.behaviorsTitle}>
+            <Text style={styles.labelText}>Behaviors</Text>
+            <Button title="add" onPress={() => handleAdd()} />
+          </View>
+          {behaviors ? (
+            behaviors.map((data, i) => {
+              return (
+                <View style={styles.behaviorInput} key={i}>
+                  <TextInput
+                    key={i}
+                    value={behaviors[i]}
+                    placeholder="add behavior"
+                    onChangeText={e => handleChange(e, i)}
+                    style={styles.input}
+                  />
+                  <Button title="x" onPress={() => handleDelete(i)} />
+                </View>
+              );
+            })
+          ) : (
+            <View style={styles.loading}>
+              <ActivityIndicator size={'large'} />
             </View>
-          );
-        })
-      ) : (
-        <View style={styles.loading}>
-          <ActivityIndicator size={'large'} />
-        </View>
-      )}
-      <Text style={styles.labelText}>Notes</Text>
-      <TextInput
-        style={styles.notesInput}
-        multiline
-        numberOfLines={6}
-        returnKeyType="done"
-        placeholder="Notes"
-        name="notes"
-        id="notes"
-        value={notes}
-        onChangeText={text => setNotes(text)}
-      />
+          )}
 
-      <Button title="Submit" onPress={onSubmit} />
-    </FormContainer>
+          <View style={styles.pickerContainer}>
+            <Text style={styles.labelText}>Client Treatment Plan</Text>
+            <View style={styles.picker}>
+              <DocumentPickerComponent setPdfBase={setPdfBase} />
+            </View>
+          </View>
+          <Text style={styles.labelText}>Notes</Text>
+          <TextInput
+            style={styles.notesInput}
+            multiline
+            numberOfLines={6}
+            returnKeyType="done"
+            placeholder="Notes"
+            name="notes"
+            id="notes"
+            value={notes}
+            onChangeText={text => setNotes(text)}
+          />
+
+          <Button title="Submit" onPress={onSubmit} />
+        </FormContainer>
+      </View>
+    </View>
   );
 };
 export default EditClient;

@@ -1,16 +1,15 @@
 import {StyleSheet} from 'react-native';
+import {scaleFontSize} from '../../assets/styles/scaling';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'white',
   },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
+  btnText: {
+    color: 'white',
+    fontSize: scaleFontSize(18),
+    alignSelf: 'center',
   },
 });
 export default styles;

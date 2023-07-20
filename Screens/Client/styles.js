@@ -1,10 +1,17 @@
 import {StyleSheet} from 'react-native';
-import {verticalScale} from '../../assets/styles/scaling';
+import {
+  horizontalScale,
+  scaleFontSize,
+  verticalScale,
+} from '../../assets/styles/scaling';
 
 const styles = StyleSheet.create({
   clientHeader: {
     alignItems: 'center',
-    paddingTop: verticalScale(20),
+    marginTop: verticalScale(24),
+  },
+  headerText: {
+    fontSize: scaleFontSize(30),
   },
   behaviorContainer: {
     height: '80%',
@@ -47,6 +54,17 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 20,
     top: 20,
+  },
+
+  backBtn: {
+    position: 'absolute',
+    top: verticalScale(24),
+    marginLeft: horizontalScale(24),
+  },
+  treatmentPlanBtnContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: verticalScale(10),
   },
 });
 

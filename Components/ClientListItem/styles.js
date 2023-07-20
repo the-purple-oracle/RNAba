@@ -1,10 +1,12 @@
 import {StyleSheet} from 'react-native';
+import {horizontalScale, verticalScale} from '../../assets/styles/scaling';
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    borderBottomWidth: 2,
-    borderBottomColor: 'gainsboro',
-    margin: 10,
+    borderWidth: 2,
+    borderRadius: 10,
+    marginHorizontal: horizontalScale(24),
+    marginTop: verticalScale(24),
   },
   txt: {
     fontSize: 20,
