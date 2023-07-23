@@ -9,6 +9,9 @@ import Register from '../Screens/Register/Register';
 import AddClient from '../Screens/AddClient/AddClient';
 import EditClient from '../Screens/EditClient/EditClient';
 import TreatmentPlan from '../Screens/TreatmentPlan/TreatmentPlan';
+import Session from '../Screens/Session/Session';
+import SessionDetails from '../Screens/SessionDetails/SessionDetails';
+
 const Stack = createStackNavigator();
 
 export const NonAuthenticated = () => {
@@ -33,6 +36,8 @@ export const Authenticated = () => {
       <Stack.Screen name={Routes.AddClient} component={AddClient} />
       <Stack.Screen name={Routes.EditClient} component={EditClient} />
       <Stack.Screen name={Routes.TreatmentPlan} component={TreatmentPlan} />
+      <Stack.Screen name={Routes.Session} component={Session} />
+      <Stack.Screen name={Routes.SessionDetails} component={SessionDetails} />
     </Stack.Navigator>
   );
 };

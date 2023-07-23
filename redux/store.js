@@ -4,10 +4,12 @@ import {persistReducer, persistStore} from 'redux-persist';
 
 import User from './reducers/User';
 import Clients from './reducers/Clients';
+import Sessions from './reducers/Sessions';
 
 const rootReducer = combineReducers({
   user: User,
   clients: Clients,
+  sessions: Sessions,
 });
 
 const configuration = {

@@ -7,4 +7,6 @@ export const Routes = {
   AddClient: 'AddClient',
   EditClient: 'EditClient',
   TreatmentPlan: 'TreatmentPlan',
+  Session: 'Session',
+  SessionDetails: 'SessionDetails',
 };

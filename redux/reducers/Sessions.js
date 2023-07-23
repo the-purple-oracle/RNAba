@@ -11,14 +11,14 @@ const Sessions = createSlice({
     resetSessions: () => {
       return initialState;
     },
-    addSession: (state, action) => {
+    setSessions: (state, action) => {
       return {
         ...state,
-        sessions: [...state.sessions, action.payload],
+        sessions: action.payload,
       };
     },
   },
 });
 
-export const {resetSessions, addSession} = Sessions.actions;
+export const {resetSessions, setSessions} = Sessions.actions;
 export default Sessions.reducer;

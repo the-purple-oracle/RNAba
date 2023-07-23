@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   Text,
@@ -7,7 +7,9 @@ import {
   Modal,
   Button,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
+import {useFocusEffect} from '@react-navigation/core';
 import TallyBox from '../../Components/TallyBox/TallyBox';
 import StyledButton from '../../Components/StyledButton';
 import GoBackBtn from '../../Components/GoBackBtn/GoBackBtn';
@@ -17,46 +19,25 @@ import {useDispatch, useSelector} from 'react-redux';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import styles from './styles';
 import {faClose, faGear} from '@fortawesome/free-solid-svg-icons';
+import Session from '../Session/Session';
+import {getClientSessions} from '../../api/sessions';
+import {setSessions} from '../../redux/reducers/Sessions';
+import SessionListItem from '../../Components/SessionListItem/SessionListItem';
 
 const Client = props => {
   const user = useSelector(state => state.user);
+  const sessions = useSelector(state => state.sessions);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const client = props.route.params;
-  let behaviors = client.behaviors;
-  const [tallies, setTallies] = useState();
+
   const [modalVisible, setModalVisible] = useState(false);
-  const [sessions, setSessions] = useState(client.sessions);
+  const [sessionList, setSessionsList] = useState();
+
   useEffect(() => {
-    setUpTallies();
-    return () => {
-      setTallies();
-    };
+    // getClientSessions(client._id, dispatch);
+    setSessionsList(sessions.sessions);
   }, []);
-
-  const setUpTallies = () => {
-    let t = {};
-    for (let i = 0; i < behaviors.length; i++) {
-      t[behaviors[i]] = 0;
-    }
-    setTallies(t);
-  };
-  const getAllTallies = () => {
-    let newSession = tallies;
-    setSessions(prevArray => [...prevArray, newSession]);
-    const data = [...sessions, newSession];
-
-    editSession(data, client._id, user.token, navigation);
-    // editSession(newSession, client._id, user.token, navigation);
-    // console.log(newSession);
-  };
-
-  const getTally = (name, count) => {
-    let newTallies = tallies;
-    newTallies[name] = count;
-    // console.log(newTallies);
-    setTallies(newTallies);
-  };
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
@@ -122,7 +103,7 @@ const Client = props => {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.backBtn}>
+      <View style={styles.goBackBtn}>
         <GoBackBtn />
       </View>
       <View style={styles.treatmentPlanBtnContainer}>
@@ -135,18 +116,21 @@ const Client = props => {
           <Text style={styles.btnText}>Treatment Plan</Text>
         </StyledButton>
       </View>
-      <Button title={'get tallies'} onPress={() => getAllTallies()} />
-      <View style={styles.behaviorContainer}>
-        <FlatList
-          data={client.behaviors}
-          numColumns={2}
-          columnWrapperStyle={{
-            justifyContent: 'space-between',
-          }}
-          renderItem={({item}) => <TallyBox title={item} getTally={getTally} />}
-          contentContainerStyle={[styles.flatListStyles]}
-        />
+      <View style={styles.sessionList}>
+        {sessionList ? (
+          sessionList?.map(s => (
+            <SessionListItem key={s.id} client={client} session={s} />
+          ))
+        ) : (
+          <View style={styles.loading}>
+            <ActivityIndicator size={'large'} />
+          </View>
+        )}
       </View>
+      <Button
+        title={'New session'}
+        onPress={() => navigation.navigate('Session', client)}
+      />
     </View>
   );
 };

@@ -6,6 +6,11 @@ import {
 } from '../../assets/styles/scaling';
 
 const styles = StyleSheet.create({
+  goBackBtn: {
+    position: 'absolute',
+    top: verticalScale(34),
+    marginLeft: horizontalScale(24),
+  },
   clientHeader: {
     alignItems: 'center',
     marginTop: verticalScale(24),
@@ -56,15 +61,14 @@ const styles = StyleSheet.create({
     top: 20,
   },
 
-  backBtn: {
-    position: 'absolute',
-    top: verticalScale(24),
-    marginLeft: horizontalScale(24),
-  },
   treatmentPlanBtnContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: verticalScale(10),
+  },
+  sessionList: {
+    alignItems: 'center',
+    marginVertical: verticalScale(10),
   },
 });
 
