@@ -2,6 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
   sessions: [],
+  timerData: null,
 };
 
 const Sessions = createSlice({
@@ -17,8 +18,14 @@ const Sessions = createSlice({
         sessions: action.payload,
       };
     },
+    // setTimerData: (state, action) => {
+    //   return {
+    //     ...state,
+    //     timerData: action.payload,
+    //   };
+    // },
   },
 });
 
-export const {resetSessions, setSessions} = Sessions.actions;
+export const {resetSessions, setSessions, setTimerData} = Sessions.actions;
 export default Sessions.reducer;

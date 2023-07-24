@@ -4,7 +4,14 @@ import axios from 'axios';
 import {setSessions} from '../redux/reducers/Sessions';
 import {getUserInfo} from '../assets/helpers/helpers';
 
-export const saveSession = (tallies, clientId, user, navigation, dispatch) => {
+export const saveSession = (
+  tallies,
+  intervals,
+  clientId,
+  user,
+  navigation,
+  dispatch,
+) => {
   let token = user.token;
   let userId = user.userProfile.id;
 
@@ -13,6 +20,7 @@ export const saveSession = (tallies, clientId, user, navigation, dispatch) => {
   };
   const data = {
     tallies,
+    intervals: intervals.intervals,
     clientId,
     userId,
   };

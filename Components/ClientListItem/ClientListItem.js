@@ -8,6 +8,7 @@ import styles from './styles';
 const ClientListItem = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+
   return (
     <TouchableOpacity
       style={styles.container}

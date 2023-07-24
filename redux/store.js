@@ -5,11 +5,13 @@ import {persistReducer, persistStore} from 'redux-persist';
 import User from './reducers/User';
 import Clients from './reducers/Clients';
 import Sessions from './reducers/Sessions';
+import ActiveSession from './reducers/ActiveSession';
 
 const rootReducer = combineReducers({
   user: User,
   clients: Clients,
   sessions: Sessions,
+  activeSession: ActiveSession,
 });
 
 const configuration = {
