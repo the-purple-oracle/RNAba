@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 // import {setTimerData} from '../../redux/reducers/Sessions';
 import StyledButton from '../StyledButton';
@@ -75,20 +75,25 @@ const SessionTimer = () => {
         </View>
         <View style={styles.startStopBtns}>
           <StyledButton medium secondary onPress={handleStartSession}>
-            <Text>Start</Text>
+            <Text style={styles.btnText}>Start</Text>
           </StyledButton>
           <StyledButton medium secondary onPress={handleStopSession}>
-            <Text>Stop</Text>
+            <Text style={styles.btnText}>Stop</Text>
           </StyledButton>
         </View>
       </View>
-      {timerData.intervals.map((interval, index) => (
-        <View key={index}>
-          <Text>Interval {index + 1}</Text>
-          <Text>Start: {formatTime(interval.startTime)}</Text>
-          <Text>End: {formatTime(interval.endTime)}</Text>
-        </View>
-      ))}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.pastIntervals}>
+        {timerData.intervals.map((interval, index) => (
+          <View key={index} style={styles.interval}>
+            <Text>Interval {index + 1}</Text>
+            <Text>Start: {formatTime(interval.startTime)}</Text>
+            <Text>End: {formatTime(interval.endTime)}</Text>
+          </View>
+        ))}
+      </ScrollView>
     </View>
   );
 };

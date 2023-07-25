@@ -30,6 +30,9 @@ const Client = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const client = props.route.params;
+  const isSessionActive = useSelector(
+    state => state.activeSession.isSessionActive,
+  );
 
   const [modalVisible, setModalVisible] = useState(false);
   const [sessionList, setSessionsList] = useState();
@@ -127,10 +130,16 @@ const Client = props => {
           </View>
         )}
       </View>
-      <Button
-        title={'New session'}
-        onPress={() => navigation.navigate('Session', client)}
-      />
+      <View style={styles.sessionButton}>
+        <StyledButton
+          large
+          secondary
+          onPress={() => navigation.navigate('Session', client)}>
+          <Text style={styles.btnText}>
+            {!isSessionActive ? 'New Session' : 'Resume Session'}
+          </Text>
+        </StyledButton>
+      </View>
     </View>
   );
 };

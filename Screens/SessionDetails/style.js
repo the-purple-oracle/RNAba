@@ -1,5 +1,9 @@
 import {StyleSheet} from 'react-native';
-import {scaleFontSize, verticalScale} from '../../assets/styles/scaling';
+import {
+  horizontalScale,
+  scaleFontSize,
+  verticalScale,
+} from '../../assets/styles/scaling';
 
 const styles = StyleSheet.create({
   goBackBtn: {
@@ -10,6 +14,7 @@ const styles = StyleSheet.create({
   sessionDetailContainer: {
     flex: 1,
     alignItems: 'center',
+    marginHorizontal: horizontalScale(24),
   },
   clientNameContainer: {
     alignItems: 'center',
@@ -33,6 +38,9 @@ const styles = StyleSheet.create({
   item: {
     fontSize: 16,
     marginBottom: 8,
+  },
+  interval: {
+    padding: 10,
   },
 });
 

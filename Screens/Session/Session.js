@@ -1,5 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Button, FlatList, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  Button,
+  FlatList,
+  TouchableOpacity,
+  SafeAreaView,
+  ScrollView,
+} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {editSession} from '../../api/clients';
 import {saveSession} from '../../api/sessions';
@@ -43,9 +51,6 @@ const Session = props => {
   useEffect(() => {
     // If there is an active session, update the tallies state with the active session's data
     if (isSessionActive && activeSession) {
-      // console.log('in session');
-      // console.log('timer data is: ', timerData);
-      // console.log(activeSession.tallies);
       setTallies(activeSession.tallies);
     }
   }, [isSessionActive, activeSession]);
@@ -88,25 +93,36 @@ const Session = props => {
   };
 
   return (
-    <View style={styles.sessionContainer}>
-      <View style={styles.goBackBtn}>
-        <GoBackBtn />
-      </View>
-      <View style={styles.saveBtnContainer}>
-        {!isSessionActive && (
-          <StyledButton secondary medium onPress={handleStartSession}>
-            <Text style={styles.saveBtnText}>Start Session</Text>
-          </StyledButton>
-        )}
-        {isSessionActive && (
-          <StyledButton secondary medium onPress={getAllTallies}>
-            <Text style={styles.saveBtnText}>Save Session</Text>
-          </StyledButton>
-        )}
-      </View>
-      {isSessionActive && <SessionTimer />}
-      <View style={styles.behaviorContainer}>
+    <SafeAreaView style={styles.container}>
+      {!isSessionActive ? (
+        <>
+          <View style={styles.goBackBtn}>
+            <GoBackBtn />
+          </View>
+          <View style={styles.startSessionBtn}>
+            <StyledButton secondary medium onPress={handleStartSession}>
+              <Text style={styles.btnText}>Start Session</Text>
+            </StyledButton>
+          </View>
+        </>
+      ) : (
         <FlatList
+          showsVerticalScrollIndicator={false}
+          ListHeaderComponent={
+            <>
+              <View style={styles.goBackBtn}>
+                <GoBackBtn />
+              </View>
+              <View style={styles.saveBtnContainer}>
+                {isSessionActive && (
+                  <StyledButton secondary medium onPress={getAllTallies}>
+                    <Text style={styles.btnText}>Save Session</Text>
+                  </StyledButton>
+                )}
+              </View>
+              {isSessionActive && <SessionTimer />}
+            </>
+          }
           data={client.behaviors}
           numColumns={2}
           columnWrapperStyle={{
@@ -121,9 +137,92 @@ const Session = props => {
           )}
           contentContainerStyle={[styles.flatListStyles]}
         />
-      </View>
-    </View>
+      )}
+    </SafeAreaView>
   );
 };
+
+//mega flatlist version
+// return (
+//   <SafeAreaView style={styles.container}>
+//     <FlatList
+//       showsVerticalScrollIndicator={false}
+//       ListHeaderComponent={
+//         <>
+//           <View style={styles.goBackBtn}>
+//             <GoBackBtn />
+//           </View>
+//           <View style={styles.saveBtnContainer}>
+//             {!isSessionActive && (
+//               <StyledButton secondary medium onPress={handleStartSession}>
+//                 <Text style={styles.btnText}>Start Session</Text>
+//               </StyledButton>
+//             )}
+//             {isSessionActive && (
+//               <StyledButton secondary medium onPress={getAllTallies}>
+//                 <Text style={styles.btnText}>Save Session</Text>
+//               </StyledButton>
+//             )}
+//           </View>
+//           {isSessionActive && <SessionTimer />}
+//         </>
+//       }
+//       data={client.behaviors}
+//       numColumns={2}
+//       columnWrapperStyle={{
+//         justifyContent: 'space-between',
+//       }}
+//       renderItem={({item}) => (
+//         <TallyBox
+//           title={item}
+//           count={tallies[item]} // Pass the count from the tallies state to the TallyBox
+//           updateTally={getTally} // Pass the updateTally function to the TallyBox
+//         />
+//       )}
+//       contentContainerStyle={[styles.flatListStyles]}
+//     />
+//   </SafeAreaView>
+// );
+
+// ScrollView virtualization issue version
+// return (
+//   <ScrollView>
+//     <View style={styles.sessionContainer}>
+//       <View style={styles.goBackBtn}>
+//         <GoBackBtn />
+//       </View>
+//       <View style={styles.saveBtnContainer}>
+//         {!isSessionActive && (
+//           <StyledButton secondary medium onPress={handleStartSession}>
+//             <Text style={styles.saveBtnText}>Start Session</Text>
+//           </StyledButton>
+//         )}
+//         {isSessionActive && (
+//           <StyledButton secondary medium onPress={getAllTallies}>
+//             <Text style={styles.saveBtnText}>Save Session</Text>
+//           </StyledButton>
+//         )}
+//       </View>
+//       {isSessionActive && <SessionTimer />}
+//       <View style={styles.behaviorContainer}>
+//         <FlatList
+//           data={client.behaviors}
+//           numColumns={2}
+//           columnWrapperStyle={{
+//             justifyContent: 'space-between',
+//           }}
+//           renderItem={({item}) => (
+//             <TallyBox
+//               title={item}
+//               count={tallies[item]} // Pass the count from the tallies state to the TallyBox
+//               updateTally={getTally} // Pass the updateTally function to the TallyBox
+//             />
+//           )}
+//           contentContainerStyle={[styles.flatListStyles]}
+//         />
+//       </View>
+//     </View>
+//   </ScrollView>
+// );
 
 export default Session;

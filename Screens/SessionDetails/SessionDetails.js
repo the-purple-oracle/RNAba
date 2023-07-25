@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, View, Text, FlatList} from 'react-native';
+import {SafeAreaView, View, Text, FlatList, ScrollView} from 'react-native';
 import GoBackBtn from '../../Components/GoBackBtn/GoBackBtn';
 import StyledButton from '../../Components/StyledButton';
 import {useNavigation} from '@react-navigation/native';
@@ -12,6 +12,13 @@ const SessionDetails = props => {
   const {session, client} = props.route.params;
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const formatTime = date => {
+    return new Date(date).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    });
+  };
   return (
     <SafeAreaView style={styles.sessionDetailContainer}>
       <View style={styles.goBackBtn}>
@@ -35,7 +42,19 @@ const SessionDetails = props => {
         )}
         keyExtractor={item => item[0]}
       />
-
+      <Text style={styles.header}>Session Intervals:</Text>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.pastIntervals}>
+        {session.intervals.map((interval, index) => (
+          <View key={index} style={styles.interval}>
+            <Text>Interval {index + 1}</Text>
+            <Text>Start: {formatTime(interval.startTime)}</Text>
+            <Text>End: {formatTime(interval.endTime)}</Text>
+          </View>
+        ))}
+      </ScrollView>
       <StyledButton
         secondary
         large

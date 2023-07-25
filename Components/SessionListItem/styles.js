@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     padding: 10,
     borderWidth: 1,
+    borderRadius: 8,
   },
 });
 

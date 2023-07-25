@@ -63,7 +63,7 @@ export const deleteSession = (sessionId, clientId, navigation, dispatch) => {
       Toast.show({
         topOffset: 60,
         type: 'success',
-        text1: 'Client was successfully deleted',
+        text1: 'Session was successfully deleted',
         text2: '',
       });
       //update the clients sessions after deleting
@@ -87,17 +87,3 @@ export const getClientSessions = async (clientId, dispatch) => {
     console.log(error);
   }
 };
-
-// export const getClientSessions = async (clientId, dispatch) => {
-//   const user = getUserInfo();
-//   const config = {
-//     headers: {Authorization: `Bearer ${user.token}`},
-//   };
-
-//   return axios
-//     .get(`${baseURL}sessions/client/${clientId}`, config)
-//     .then(res => {
-//       dispatch(setSessions(res.data));
-//     })
-//     .catch(error => console.log(error));
-// };

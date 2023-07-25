@@ -70,6 +70,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: verticalScale(10),
   },
+  sessionButton: {
+    alignItems: 'center',
+  },
 });
 
 export default styles;
