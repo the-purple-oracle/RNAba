@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, View, Text, FlatList, ScrollView} from 'react-native';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  FlatList,
+  ScrollView,
+  Image,
+} from 'react-native';
 import GoBackBtn from '../../Components/GoBackBtn/GoBackBtn';
 import StyledButton from '../../Components/StyledButton';
 import {useNavigation} from '@react-navigation/native';
@@ -7,6 +14,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import styles from './style';
 import {formatDate} from '../../assets/helpers/helpers';
 import {deleteSession} from '../../api/sessions';
+import {SessionDetailTabNavigation} from '../../Navigation/MainNavigation';
 
 const SessionDetails = props => {
   const {session, client} = props.route.params;
@@ -31,8 +39,11 @@ const SessionDetails = props => {
       <Text style={styles.sessionDate}>
         Session date: {formatDate(session.dateCreated)}
       </Text>
+      <View style={{height: '100%', width: '100%'}}>
+        <SessionDetailTabNavigation session={session} client={client} />
+      </View>
 
-      <Text style={styles.header}>Session Tallies:</Text>
+      {/* <Text style={styles.header}>Session Tallies:</Text>
       <FlatList
         data={Object.entries(session.tallies)}
         renderItem={({item}) => (
@@ -42,6 +53,29 @@ const SessionDetails = props => {
         )}
         keyExtractor={item => item[0]}
       />
+      <Text style={styles.signatureHeader}>Signatures</Text>
+      <View style={styles.signaturesContainer}>
+        <View style={styles.signaturesContainer}>
+          {session.signatures && session.signatures[0] && (
+            <View style={styles.signature}>
+              <Text>{session.signatures[0].pickerValue}</Text>
+              <Image
+                style={{width: 100, height: 100}}
+                source={{uri: session.signatures[0].signature}}
+              />
+            </View>
+          )}
+          {session.signatures && session.signatures[1] && (
+            <View style={styles.signature}>
+              <Text>{session.signatures[1].pickerValue}</Text>
+              <Image
+                style={{width: 100, height: 100}}
+                source={{uri: session.signatures[1].signature}}
+              />
+            </View>
+          )}
+        </View>
+      </View>
       <Text style={styles.header}>Session Intervals:</Text>
       <ScrollView
         horizontal
@@ -62,7 +96,7 @@ const SessionDetails = props => {
           deleteSession(session.id, client.id, navigation, dispatch)
         }>
         <Text>Delete Session</Text>
-      </StyledButton>
+      </StyledButton> */}
     </SafeAreaView>
   );
 };

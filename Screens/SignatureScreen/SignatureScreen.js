@@ -3,15 +3,34 @@ import {Button, View, Text, ScrollView} from 'react-native';
 import Signature from 'react-native-signature-canvas';
 import GoBackBtn from '../../Components/GoBackBtn/GoBackBtn';
 import Picker from '../../Components/Picker/Picker';
+import {useDispatch} from 'react-redux';
+import {addSignature} from '../../redux/reducers/ActiveSession';
+import Toast from 'react-native-toast-message';
 import styles from './styles';
 
-const SignatureScreen = ({text, onOk}) => {
+const SignatureScreen = () => {
   const ref = useRef();
-  const [value, setValue] = useState('');
+  const dispatch = useDispatch();
+  const [value, setValue] = useState(null);
+
   const handleSignature = signature => {
-    console.log(signature);
-    // Here you could store the signature data in the user's session.
-    // Note that the 'signature' returned is a base64 encoded PNG image.
+    if (value === null) {
+      Toast.show({
+        topOffset: 60,
+        type: 'error',
+        text1: 'Please select option before saving',
+        text2: 'Please try again',
+      });
+    } else {
+      console.log(value);
+      Toast.show({
+        topOffset: 60,
+        type: 'success',
+        text1: 'Signature added',
+        text2: '',
+      });
+      dispatch(addSignature({signature, pickerValue: value}));
+    }
   };
   const handleClear = () => {
     console.log('clearing text');

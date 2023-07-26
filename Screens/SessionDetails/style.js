@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   sessionDetailContainer: {
     flex: 1,
     alignItems: 'center',
-    marginHorizontal: horizontalScale(24),
+    // marginHorizontal: horizontalScale(24),
   },
   clientNameContainer: {
     alignItems: 'center',
@@ -26,9 +26,22 @@ const styles = StyleSheet.create({
   },
   sessionDate: {
     fontSize: scaleFontSize(20),
+    marginBottom: 15,
   },
   resultsContainer: {
     padding: 16,
+  },
+  signatureHeader: {
+    fontSize: scaleFontSize(20),
+    fontWeight: 'bold',
+  },
+  signaturesContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: verticalScale(10),
+  },
+  signature: {
+    marginHorizontal: horizontalScale(10),
   },
   header: {
     fontSize: scaleFontSize(20),

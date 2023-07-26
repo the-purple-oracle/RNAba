@@ -6,6 +6,7 @@ import {getUserInfo} from '../assets/helpers/helpers';
 
 export const saveSession = (
   tallies,
+  signatures,
   intervals,
   clientId,
   user,
@@ -20,6 +21,7 @@ export const saveSession = (
   };
   const data = {
     tallies,
+    signatures,
     intervals: intervals.intervals,
     clientId,
     userId,

@@ -30,6 +30,7 @@ const Session = props => {
   const isSessionActive = useSelector(
     state => state.activeSession.isSessionActive,
   );
+  const signatures = useSelector(state => state.activeSession.signatures);
 
   const timerData = useSelector(state => state.activeSession.timerData);
   const navigation = useNavigation();
@@ -66,7 +67,15 @@ const Session = props => {
   const getAllTallies = () => {
     let intervals = timerData;
 
-    saveSession(tallies, intervals, client._id, user, navigation, dispatch);
+    saveSession(
+      tallies,
+      signatures,
+      intervals,
+      client._id,
+      user,
+      navigation,
+      dispatch,
+    );
     // After saving the session, stop the active session
     dispatch(stopSession());
   };
