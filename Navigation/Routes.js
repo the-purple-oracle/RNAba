@@ -9,4 +9,5 @@ export const Routes = {
   TreatmentPlan: 'TreatmentPlan',
   Session: 'Session',
   SessionDetails: 'SessionDetails',
+  SignatureScreen: 'SignatureScreen',
 };

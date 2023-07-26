@@ -11,16 +11,10 @@ import {
 } from '../redux/reducers/User';
 
 export const loginUser = (user, dispatch) => {
-  fetch(`${baseURL}users/login`, {
-    method: 'POST',
-    body: JSON.stringify(user),
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  })
-    .then(res => res.json())
-    .then(data => {
+  axios
+    .post(`${baseURL}users/login`, user)
+    .then(response => {
+      const data = response.data;
       if (data) {
         const token = data.token;
         dispatch(updateToken(token));
@@ -31,7 +25,7 @@ export const loginUser = (user, dispatch) => {
         logoutUser(dispatch);
       }
     })
-    .catch(err => {
+    .catch(error => {
       console.log('in error');
       Toast.show({
         topOffset: 60,
@@ -41,6 +35,36 @@ export const loginUser = (user, dispatch) => {
       });
       logoutUser(dispatch);
     });
+  // fetch(`${baseURL}users/login`, {
+  //   method: 'POST',
+  //   body: JSON.stringify(user),
+  //   headers: {
+  //     Accept: 'application/json',
+  //     'Content-Type': 'application/json',
+  //   },
+  // })
+  //   .then(res => res.json())
+  //   .then(data => {
+  //     if (data) {
+  //       const token = data.token;
+  //       dispatch(updateToken(token));
+  //       AsyncStorage.setItem('jwt', token);
+  //       const decoded = jwt_decode(token);
+  //       dispatch(logIn(decoded, user, token));
+  //     } else {
+  //       logoutUser(dispatch);
+  //     }
+  //   })
+  //   .catch(err => {
+  //     console.log('in error');
+  //     Toast.show({
+  //       topOffset: 60,
+  //       type: 'error',
+  //       text1: 'Please provide correct credentials',
+  //       text2: '',
+  //     });
+  //     logoutUser(dispatch);
+  //   });
 };
 
 export const registerUser = (user, dispatch) => {

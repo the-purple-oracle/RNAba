@@ -57,8 +57,8 @@ const styles = StyleSheet.create({
   },
   gear: {
     position: 'absolute',
-    right: 20,
-    top: 20,
+    right: horizontalScale(20),
+    top: verticalScale(20),
   },
 
   treatmentPlanBtnContainer: {

@@ -30,7 +30,7 @@ const Session = props => {
   const isSessionActive = useSelector(
     state => state.activeSession.isSessionActive,
   );
-  // const timerData = useSelector(state => state.sessions.timerData);
+
   const timerData = useSelector(state => state.activeSession.timerData);
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -106,37 +106,48 @@ const Session = props => {
           </View>
         </>
       ) : (
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          ListHeaderComponent={
-            <>
-              <View style={styles.goBackBtn}>
-                <GoBackBtn />
-              </View>
-              <View style={styles.saveBtnContainer}>
-                {isSessionActive && (
-                  <StyledButton secondary medium onPress={getAllTallies}>
-                    <Text style={styles.btnText}>Save Session</Text>
-                  </StyledButton>
-                )}
-              </View>
-              {isSessionActive && <SessionTimer />}
-            </>
-          }
-          data={client.behaviors}
-          numColumns={2}
-          columnWrapperStyle={{
-            justifyContent: 'space-between',
-          }}
-          renderItem={({item}) => (
-            <TallyBox
-              title={item}
-              count={tallies[item]} // Pass the count from the tallies state to the TallyBox
-              updateTally={getTally} // Pass the updateTally function to the TallyBox
-            />
-          )}
-          contentContainerStyle={[styles.flatListStyles]}
-        />
+        <>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            ListHeaderComponent={
+              <>
+                <View style={styles.goBackBtn}>
+                  <GoBackBtn />
+                </View>
+                <View style={styles.saveBtnContainer}>
+                  {isSessionActive && (
+                    <StyledButton secondary medium onPress={getAllTallies}>
+                      <Text style={styles.btnText}>Save Session</Text>
+                    </StyledButton>
+                  )}
+                  {isSessionActive && (
+                    <StyledButton
+                      secondary
+                      medium
+                      onPress={() => navigation.navigate('SignatureScreen')}>
+                      <Text style={styles.btnText}>Add Signature</Text>
+                    </StyledButton>
+                  )}
+                </View>
+                {isSessionActive && <SessionTimer />}
+              </>
+            }
+            data={client.behaviors}
+            numColumns={2}
+            columnWrapperStyle={{
+              justifyContent: 'space-between',
+            }}
+            renderItem={({item}) => (
+              <TallyBox
+                title={item}
+                count={tallies[item]} // Pass the count from the tallies state to the TallyBox
+                updateTally={getTally} // Pass the updateTally function to the TallyBox
+              />
+            )}
+            contentContainerStyle={[styles.flatListStyles]}
+          />
+          {/* <SignatureScreen /> */}
+        </>
       )}
     </SafeAreaView>
   );

@@ -12,6 +12,8 @@ const styles = StyleSheet.create({
   saveBtnContainer: {
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'row',
+    marginLeft: horizontalScale(30),
   },
   // sessionContainer: {
   //   marginTop: verticalScale(24),
